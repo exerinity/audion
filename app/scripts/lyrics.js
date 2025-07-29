@@ -14,11 +14,10 @@ function get_meta(file) {
             if (!data.title || !data.artist || !data.album) {
                 throw_error("There is missing metadata, lyrics may not work");
             }
-            //document.getElementById('metadata').innerHTML = `by <strong>${data.artist}</strong><br>from <strong>${data.album}</strong>`;
             document.getElementById('artist').innerHTML = `<strong>${data.artist}</strong>`;
             document.getElementById('album').innerHTML = `<strong>${data.album}</strong>`;
             document.getElementById('np2').innerHTML = data.title;
-            document.getElementById('aod').innerHTML = `${data.title} by ${data.artist}`
+            document.getElementById('aod').innerHTML = `${data.title} by ${data.artist}`;
             const cover = document.getElementById('cover-art');
             if (data.picture) {
                 const arr = new Uint8Array(data.picture.data);
@@ -36,8 +35,10 @@ function get_meta(file) {
             get_lyrics(data.title, data.artist, data.album, Math.floor(document.getElementById('player').duration));
         },
         onError: function() {
-            document.getElementById('metadata').innerHTML = '';
+            document.getElementById('artist').innerHTML = '';
+            document.getElementById('album').innerHTML = '';
             document.getElementById('np2').innerHTML = file.name || 'Unknown track';
+            document.getElementById('aod').innerHTML = '';
             document.getElementById('cover-art').classList.add('hidden');
             throw_error("There is missing metadata, lyrics may not work");
         }
@@ -84,18 +85,19 @@ function lrc_parse(syncedLyrics) {
             const time = parseInt(timeParts[0]) * 60 + parseFloat(timeParts[1]);
             return { time, text: match[2].trim() };
         }
+        console.warn(`Skipping malformed LRC line: ${line}`);
         return { time: 0, text: line.trim() };
-    });
+    }).filter(line => line.text);
 }
 
 function lrc_play(lrc_currents, act_index) {
     const lrc_con = document.getElementById('lyrics');
     lrc_con.innerHTML = '';
-    lrc_currents.forEach((line, index) => {
+    lrc_currents.forEach((line) => {
         const p = document.createElement('p');
         p.textContent = line.text || ' ';
-        p.dataset.index = line.ogin;
-        if (line.ogin === act_index) {
+        p.dataset.index = line.ogindex;
+        if (line.ogindex === act_index) {
             p.classList.add('active');
         }
         lrc_con.appendChild(p);
@@ -105,11 +107,11 @@ function lrc_play(lrc_currents, act_index) {
 function update_lyrics() {
     const player = document.getElementById('player');
     const lrc_con = document.getElementById('lyrics');
-    const cur_index = player.cur_index;
+    const cur_time = player.currentTime;
     let act_index = -1;
 
     for (let i = 0; i < lrc_data.length; i++) {
-        if (lrc_data[i].time <= cur_index && (i === lrc_data.length - 1 || lrc_data[i + 1].time > cur_index)) {
+        if (lrc_data[i].time <= cur_time && (i === lrc_data.length - 1 || lrc_data[i + 1].time > cur_time)) {
             act_index = i;
             break;
         }
@@ -132,7 +134,7 @@ function update_lyrics() {
     }
 
     for (let i = lrc_si; i <= lrc_en; i++) {
-        lrc_currents.push({ ...lrc_data[i], ogin: i });
+        lrc_currents.push({ ...lrc_data[i], ogindex: i });
     }
 
     lrc_play(lrc_currents, act_index);
@@ -157,3 +159,10 @@ function lrc_wipe() {
 function setCurrentFile(file) {
     cur_file = file;
 }
+
+function force() {
+    const player = document.getElementById('player');
+    player.addEventListener('timeupdate', update_lyrics);
+}
+
+document.addEventListener('DOMContentLoaded', force);

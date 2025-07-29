@@ -68,6 +68,7 @@ stat_up("Loading...");
 
 
 function play(fileOrUrl, name) {
+    lrc_wipe();
     const now = Date.now();
     if (now - lastact < deb_ms) return;
     lastact = now;
