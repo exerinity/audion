@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="aod">Music player</title>
+    <link rel="stylesheet" href="/app/stylesheets/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+</head>
+<body>
+    <audio src="https://i.exerinity.com/success.mp3" autoplay id="sucsound"></audio>
+    <audio src="https://i.exerinity.com/error.mp3" id="errsound"></audio>
+    <div id="mobo_warn" class="hidden">
+        <h2>Mobile is not supported</h2>
+        <p>Due to the nature of this app, requiring a wider interface, mobile is not recommended.</p>
+        <p>Furthermore, on iPhones, uploading music is much more difficult. You can do it in Files.. but why bother?</p>
+        <p>Furtherfurthermore, this app generates high-frequency visualizers which may lag lower-end devices.</p><br>
+        <p><strong>With that in mind and you still want to use it, request the desktop site.</strong></p>
+    </div>
+    <noscript><div id="mobo_warn">
+        <h2>JavaScript is disabled</h2>
+        <p>This app will not work without JavaScript - please enable it to continue</p>
+    </div></noscript>
+    <div id="app" class="hidden">
+        <div class="header">
+            <h3 id="status">loading...</h3>
+            <div id="today">loading...</div>
+        </div>
+        <div class="main">
+            <div class="left">
+                <div class="inputs">
+                    <div class="inputg">
+                        <label for="upload">Upload audio file, or drag-and-drop</label>
+                        <input id="upload" type="file" accept="audio/*" class="files">
+                    </div>
+                    <span>or</span>
+                    <div class="inputg">
+                        <label for="url">enter an audio file URL</label>
+                        <input id="url" type="text" placeholder="URL (for a file, not YouTube/SoundCloud/Whatever link)">
+                    </div>
+                </div>
+                <audio id="player" controls crossorigin="anonymous" class="hidden" loop></audio>
+                <div class="metadata">
+                    <img id="cover-art" class="hidden" alt="Cover art">
+                    <div>
+                        <p id="np"></p>
+                        <div class="track">
+                            <h1 id="np2" class="track-title"></h1>
+                            <h2 id="artist" class="track-artist"></h2>
+                            <p id="album" class="track-album"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button id="rwd" title="Rewind 10s"><i class="fa-solid fa-backward"></i></button>
+                    <button id="plps" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
+                    <button id="fwd" title="Forward 10s"><i class="fa-solid fa-forward"></i></button>
+                    <button id="stop" title="Go back to 0"><i class="fa-solid fa-arrow-rotate-left"></i></button>
+                    <button id="loop" title="Toggle Loop Mode"><i class="fa-solid fa-repeat"></i></button>
+                    <button id="hotkeys">Hotkeys</button>
+                    <button id="info" title="Show Info"><i class="fa-solid fa-info"></i></button>
+                </div>
+                <div class="sliders">
+                    <div class="slidez">
+                        <label for="index" id="prog">Scrubber</label>
+                        <div class="main_slide">
+                            <span id="time-current">--:--</span>
+                            <div class="range-wrapper">
+                                <input id="index" type="range" min="0" max="100" value="0">
+                                <span id="index-tooltip" class="tooltip hidden"></span>
+                            </div>
+                            <span id="time-duration">--:--</span>
+                        </div>
+                    </div>
+                    <div class="slidez">
+                        <label for="volume">Volume</label>
+                        <div class="main_slide">
+                            <span id="vol-min">0</span>
+                            <input id="volume" type="range" min="0" max="2" step="0.01" value="2">
+                            <span id="vol-max">1</span>
+                        </div>
+                    </div>
+                    <div class="slidez">
+                        <label for="speed">Speed</label>
+                        <div class="main_slide">
+                            <span id="spd-min">0.1x</span>
+                            <input id="speed" type="range" min="0.1" max="2" step="0.1" value="1">
+                            <span id="spd-max">2.0x</span>
+                        </div>
+                    </div>
+                    <div class="slidez">
+                        <label for="viz-intensity">Visualizer intensity</label>
+                        <div class="main_slide">
+                            <span>0.5x</span>
+                            <input id="viz-intensity" type="range" min="0.5" max="2" step="0.1" value="1">
+                            <span>2.0x</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="eq_sec">
+                    <h3>Equalizer</h3>
+                    <div class="slidez">
+                        <label for="eq-preset">Preset</label>
+                        <select id="eq-preset">
+                            <option value="flat">Flat</option>
+                            <option value="pop">Pop</option>
+                            <option value="rock">Rock</option>
+                            <option value="jazz">Jazz</option>
+                            <option value="classical">Classical</option>
+                            <option value="more_bass">More Bass</option>
+                            <option value="less_bass">Less Bass</option>
+                            <option value="treble_boost">Treble Boost</option>
+                            <option value="treble_reduce">Treble Reduce</option>
+                            <option value="vocal_boost">Vocal Boost</option>
+                            <option value="treble_bass_boost">Treble & Bass Boost</option>
+                            <option value="loudness">Loudness</option>
+                        </select>
+                    </div>
+                    <div class="eqsliders">
+                        <div class="slidez">
+                            <label for="eq-60">60Hz</label>
+                            <div class="main_slide">
+                                <input id="eq-60" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-170">170Hz</label>
+                            <div class="main_slide">
+                                <input id="eq-170" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-310">310Hz</label>
+                            <div class="main_slide">
+                                <input id="eq-310" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-600">600Hz</label>
+                            <div class="main_slide">
+                                <input id="eq-600" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-1000">1kHz</label>
+                            <div class="main_slide">
+                                <input id="eq-1000" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-3000">3kHz</label>
+                            <div class="main_slide">
+                                <input id="eq-3000" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-6000">6kHz</label>
+                            <div class="main_slide">
+                                <input id="eq-6000" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-12000">12kHz</label>
+                            <div class="main_slide">
+                                <input id="eq-12000" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-14000">14kHz</label>
+                            <div class="main_slide">
+                                <input id="eq-14000" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                        <div class="slidez">
+                            <label for="eq-16000">16kHz</label>
+                            <div class="main_slide">
+                                <input id="eq-16000" type="range" min="-12" max="12" step="0.1" value="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="viz_sec">
+                    <canvas id="visualizer"></canvas>
+                    <div class="viz_cons">
+                        <label for="viz-mode">Visualizer mode</label>
+                        <select id="viz-mode">
+                            <option value="bars">Bars</option>
+                            <option value="waveform">Waveform</option>
+                            <option value="circular">Circular</option>
+                            <option value="none">None (off)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="right">
+                <div id="lyrics" class="lyrics-container"></div>
+            </div>
+        </div>
+        <div id="error" class="hidden"></div>
+    </div>
+    <script src="/app/scripts/main.js"></script>
+    <script src="/app/scripts/audio.js"></script>
+    <script src="/app/scripts/visualizer.js"></script>
+    <script src="/app/scripts/lyrics.js"></script>
+</body>
+</html>

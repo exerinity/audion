@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="aod">Info / Music player</title>
+    <link rel="stylesheet" href="/app/stylesheets/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <style>
+        a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        a:visited {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="main">
+            <div class="left">
+                <h1>
+                    Info about the music player
+                </h1>
+                <p>
+                    This is a semi-advanced music player built in JavaScript and HTML. The premise is simple: upload a file, and listen.
+                </p>
+                <p>
+                    This is NOT a YouTube/SoundCloud/Spotify player, but it supports any file your browser does.
+                </p>
+                <h2>
+                    Why?
+                </h2>
+                <p>
+                    I wanted to combine all of my previous music-related projects into one: <a href="https://visualizer.exerinity.com" target="_blank">Visualizer</a>, <a href="https://player.exerinity.com" target="_blank">Player</a>, and my in-the-works full-stack local file aggregator and player. In other words, it's < audio > on steroids.
+                </p>
+                <h2>
+                    How?
+                </h2>
+                <p>
+                    Any song you upload is entirely local and never leaves your device. The Web Audio API is utilized to display visualizers and an equalizer. Lyrics are fetched from <a href="https://lrclib.net" target="_blank">LRClib</a>. Metadata is extracted using <a href="https://github.com/aadsm/jsmediatags" target="_blank">jsmediatags</a>.
+                </p>
+                <h2>
+                    Open source
+                </h2>
+                <p>
+                    This app is open source under the <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GNU General Public License v3.0</a> <a href="https://github.com/exerinity/music" target="_blank">on GitHub</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
