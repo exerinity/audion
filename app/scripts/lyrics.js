@@ -1,43 +1,51 @@
 let cur_file = null;
 let lrc_data = [];
 
+const metadata = {};
+
 function get_meta(file) {
     jsmediatags.read(file, {
         onSuccess: function(tag) {
             const tags = tag.tags;
-            const data = {
-                title: tags.title || file.name || 'Unknown title',
-                artist: tags.artist || 'Unknown artist',
-                album: tags.album || 'Unknown album',
-                picture: tags.picture
-            };
-            if (!data.title || !data.artist || !data.album) {
+            metadata.title = tags.title || file.name || 'Unknown title';
+            metadata.artist = tags.artist || 'Unknown artist';
+            metadata.album = tags.album || 'Unknown album';
+            metadata.picture = tags.picture || null;
+
+            if (!metadata.title || !metadata.artist || !metadata.album) {
                 throw_error("There is missing metadata, lyrics may not work");
             }
-            document.getElementById('artist').innerHTML = `<strong>${data.artist}</strong>`;
-            document.getElementById('album').innerHTML = `<strong>${data.album}</strong>`;
-            document.getElementById('np2').innerHTML = data.title;
-            document.getElementById('aod').innerHTML = `${data.title} by ${data.artist}`;
+
+            document.getElementById('artist').innerHTML = `<strong>${metadata.artist}</strong>`;
+            document.getElementById('album').innerHTML = `<strong>${metadata.album}</strong>`;
+            document.getElementById('np2').innerHTML = metadata.title;
+            document.getElementById('aod').innerHTML = `${metadata.title} by ${metadata.artist}`;
+
             const cover = document.getElementById('cover-art');
-            if (data.picture) {
-                const arr = new Uint8Array(data.picture.data);
+            if (metadata.picture) {
+                const arr = new Uint8Array(metadata.picture.data);
                 let binary = '';
                 const cs = 8192;
                 for (let i = 0; i < arr.length; i += cs) {
                     binary += String.fromCharCode.apply(null, arr.subarray(i, i + cs));
                 }
                 const b64 = btoa(binary);
-                cover.src = `data:${data.picture.format};base64,${b64}`;
+                cover.src = `data:${metadata.picture.format};base64,${b64}`;
                 cover.classList.remove('hidden');
             } else {
                 cover.classList.add('hidden');
             }
-            get_lyrics(data.title, data.artist, data.album, Math.floor(document.getElementById('player').duration));
+
+            get_lyrics(metadata.title, metadata.artist, metadata.album, Math.floor(document.getElementById('player').duration));
         },
         onError: function() {
+            metadata.title = 'Unknown track';
+            metadata.artist = 'Unknown artist';
+            metadata.album = 'Unknown album';
+
             document.getElementById('artist').innerHTML = '';
             document.getElementById('album').innerHTML = '';
-            document.getElementById('np2').innerHTML = file.name || 'Unknown track';
+            document.getElementById('np2').innerHTML = metadata.title;
             document.getElementById('aod').innerHTML = '';
             document.getElementById('cover-art').classList.add('hidden');
             throw_error("There is missing metadata, lyrics may not work");

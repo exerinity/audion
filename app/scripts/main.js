@@ -46,12 +46,12 @@ function stat_up(msg, ac = true) {
             if (!elements.player.src) {
                 elements.status.innerHTML = window.location.hostname || "music";
             } else if (elements.player.paused) {
-                elements.status.innerHTML = 'Paused';
+                elements.status.innerHTML = `Now paused: <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
             } else {
-                elements.status.innerHTML = 'Now playing';
+                elements.status.innerHTML = `Now playing: <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
             }
             stat_out = null;
-        }, 3000);
+        }, 1100);
     }
 }
 
@@ -83,14 +83,12 @@ function play(fileOrUrl, name) {
             vis_init();
             eq_init();
             elements.title2.innerHTML = name;
-            stat_up(`Playing...`);
             if (typeof fileOrUrl !== 'string') {
                 get_meta(fileOrUrl);
             } else {
                 document.getElementById('artist').innerHTML = '';
                 document.getElementById('album').innerHTML = '';
                 document.getElementById('cover-art').classList.add('hidden');
-                get_lyrics(name, 'Unknown Artist', 'Unknown Album', Math.floor(elements.player.duration));
             }
         }).catch(e => {
             if (retries < m_retries) {
@@ -134,7 +132,6 @@ function init() {
         if (elements.player.paused) {
             elements.player.play();
             document.getElementById('plps').innerHTML = '<i class="fa-solid fa-pause"></i>';
-            stat_up('Playing...');
         } else {
             elements.player.pause();
             document.getElementById('plps').innerHTML = '<i class="fa-solid fa-play"></i>';
@@ -191,7 +188,7 @@ function init() {
     });
 
     elements.player.addEventListener('pause', () => {
-        stat_up('Paused');
+        stat_up(`Pausing...`);
     });
 
     elements.player.addEventListener('ended', () => {
