@@ -51,7 +51,7 @@ function stat_up(msg, ac = true) {
                 elements.status.innerHTML = `Now playing: <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
             }
             stat_out = null;
-        }, 1100);
+        }, 2000);
     }
 }
 
