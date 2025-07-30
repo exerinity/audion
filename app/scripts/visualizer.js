@@ -15,6 +15,8 @@ function viz_nt(value) {
     intensity = value;
 }
 
+let frame_id = null;
+
 function vis_init() {
     const canv = document.getElementById('visualizer');
     const ctx = canv.getContext('2d');
@@ -26,8 +28,12 @@ function vis_init() {
     const len = analyser.frequencyBinCount;
     const data = new Uint8Array(len);
 
+    if (frame_id) {
+        cancelAnimationFrame(frame_id);
+    }
+
     function draw() {
-        requestAnimationFrame(draw);
+        frame_id = requestAnimationFrame(draw);
         analyser.getByteFrequencyData(data);
         ctx.fillStyle = '#000';
         ctx.fillRect(0, 0, canv.width, canv.height);
@@ -73,8 +79,7 @@ function vis_init() {
             }
             ctx.closePath();
             ctx.stroke();
-        }
-        else if (viz_mo.value === 'none') {
+        } else if (viz_mo.value === 'none') {
             viz_z += viz_tx;
             viz_y += viz_ty;
 
