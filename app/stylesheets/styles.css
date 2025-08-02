@@ -78,6 +78,7 @@ strong {
     align-items: center;
     padding: 10px 20px;
     background: #111;
+    cursor: default;
 }
 
 #status {

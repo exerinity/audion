@@ -22,12 +22,15 @@ const elements = {
     eq_pre: document.getElementById('eq-preset'),
     err_tab: document.getElementById('error'),
     pnow: document.getElementById('play-now'),
-    stopnow: document.getElementById('cancel')
+    stopnow: document.getElementById('cancel'),
+    success_sound: document.getElementById('sucsound'),
+    error_sound: document.getElementById('errsound'),
 };
 
 function throw_error(msg) {
-    document.getElementById('errsound').play();
-    elements.err_tab.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>` + msg;
+    elements.error_sound.currentTime = 0;
+    elements.error_sound.play();
+    elements.err_tab.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ` + msg;
     console.error(msg);
     elements.err_tab.classList.remove('hidden');
     setTimeout(() => elements.err_tab.classList.add('hidden'), 6000);
@@ -71,6 +74,9 @@ stat_up("Loading...");
 
 function play(fileOrUrl, name) {
     lrc_wipe();
+    if (!elements.success_sound.paused) {
+        elements.success_sound.pause();
+    }
     const now = Date.now();
     if (now - lastact < deb_ms) return;
     lastact = now;
