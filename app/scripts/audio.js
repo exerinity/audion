@@ -1,3 +1,5 @@
+// The equalizer is currently disabled while I figure out how to finetune it
+
 let au_con = null;
 let analyser = null;
 let source = null;

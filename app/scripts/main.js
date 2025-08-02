@@ -26,7 +26,9 @@ const elements = {
 };
 
 function throw_error(msg) {
+    document.getElementById('errsound').play();
     elements.err_tab.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>` + msg;
+    console.error(msg);
     elements.err_tab.classList.remove('hidden');
     setTimeout(() => elements.err_tab.classList.add('hidden'), 6000);
 }
@@ -81,7 +83,7 @@ function play(fileOrUrl, name) {
             document.getElementById('plps').innerHTML = '<i class="fa-solid fa-pause"></i>';
             context_init(elements.player);
             vis_init();
-            eq_init();
+          //  eq_init();
             elements.title2.innerHTML = name;
             if (typeof fileOrUrl !== 'string') {
                 get_meta(fileOrUrl);
@@ -95,8 +97,8 @@ function play(fileOrUrl, name) {
                 retries++;
                 setTimeout(attempt2play, 1000);
             } else {
-                throw_error('Failed to play media: ' + e.message);
-                stat_up('Failed to play media');
+                throw_error(e.message);
+                stat_up('Error playing...');
             }
         });
     }
@@ -109,8 +111,8 @@ function init() {
         document.getElementById('app').remove();
         return;
     }
+   
     document.getElementById('app').classList.remove('hidden');
-    stat_up(window.location.hostname || "music", false);
 
     elements.upload.addEventListener('change', function () {
         const file = elements.upload.files[0];
@@ -155,16 +157,19 @@ function init() {
     }));
 
     document.getElementById('hotkeys').addEventListener('click', debounce(() => {
-        alert(`- Space: Toggle playback, play-pause
-- Arrow Left or A: Seek backward 10 seconds
-- Shift + Arrow Left or A: Seek backward 1 second
-- Arrow Right or D: Seek forward 10 seconds
-- Shift + Arrow Right or D: Seek forward 1 second
-- W or Arrow Up: Increase volume by 2%
-- S or Arrow Down: Decrease volume by 2%
-- R: Restart track (seek to 0:00)
-- L: Toggle loop mode (Current/Off)
-    `);
+        msg(`
+            <h2>Hotkeys</h2>
+            <ul style="list-style-type: none; padding: 0;">
+            <li><strong>Space</strong>: Toggle playback (Play/Pause)</li>
+            <li><strong>Arrow Left</strong>: Seek backward 10 seconds</li>
+            <li><strong>Shift + Arrow Left</strong>: Seek backward 1 second</li>
+            <li><strong>Arrow Right</strong>: Seek forward 10 seconds</li>
+            <li><strong>Shift + Arrow Right</strong>: Seek forward 1 second</li>
+            <li><strong>Arrow Up</strong>: Increase volume by 2%</li>
+            <li><strong>Arrow Down</strong>: Decrease volume by 2%</li>
+            <li><strong>L</strong>: Toggle loop</li>
+            </ul>
+        `);
     }));
     document.getElementById('info').addEventListener('click', debounce(() => {
         window.open('/info', '_blank');
@@ -185,10 +190,18 @@ function init() {
 
     elements.player.addEventListener('play', () => {
         stat_up('Playing...');
+        if (frame_id) {
+            cancelAnimationFrame(frame_id);
+        }
+        frame_id = requestAnimationFrame(vis_init);
     });
 
     elements.player.addEventListener('pause', () => {
         stat_up(`Pausing...`);
+        if (frame_id) {
+            cancelAnimationFrame(frame_id);
+            frame_id = null;
+        }
     });
 
     elements.player.addEventListener('ended', () => {
@@ -199,10 +212,14 @@ function init() {
         const error = elements.player.error;
         let err_msg = 'Playback error: ';
         if (error) {
-            err_msg += ` (Code ${error.code}${error.message ? ': ' + error.message : ''})`;
+            if (error.code === 4) {
+                err_msg = "Your browser doesn't support this file format!";
+            } else {
+                err_msg += ` (Code ${error.code}${error.message ? ': ' + error.message : ''})`;
+            }
         }
         throw_error(err_msg);
-        stat_up('Playback error');
+        stat_up('Error! Check the box below');
     });
 
     elements.player.addEventListener('timeupdate', () => {
@@ -231,17 +248,17 @@ function init() {
 
     elements.index.addEventListener('input', () => {
         elements.player.currentTime = elements.index.value;
-        stat_up(`Seeking to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
+        stat_up(`Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
     });
 
     elements.viz_mo.addEventListener('change', () => {
         stat_up(`Visualizer mode: ${elements.viz_mo.value}`);
     });
 
-    elements.eq_pre.addEventListener('change', () => {
+   /* elements.eq_pre.addEventListener('change', () => {
         eq_apply(elements.eq_pre.value);
         stat_up(`Equalizer preset: ${elements.eq_pre.value}`);
-    });
+    });*/
 
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space') {
@@ -250,11 +267,11 @@ function init() {
         } else if (e.code === 'ArrowLeft') {
             e.preventDefault();
             elements.player.currentTime -= e.shiftKey ? 1 : 10;
-            stat_up(`Seeking: ${e.shiftKey ? '-1 second' : '-10 seconds'}`);
+            stat_up(`Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
         } else if (e.code === 'ArrowRight') {
             e.preventDefault();
             elements.player.currentTime += e.shiftKey ? 1 : 10;
-            stat_up(`Seeking: ${e.shiftKey ? '+1 second' : '+10 seconds'}`);
+            stat_up(`Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
         } else if (e.code === 'KeyL') {
             document.getElementById('loop').click();
         } else if (e.code === 'ArrowUp') {
@@ -275,7 +292,7 @@ function init() {
             hour12: true,
             hour: 'numeric',
             minute: '2-digit'
-        }).toLowerCase() + ' - ' + new Date().toLocaleDateString();
+        }).toLowerCase() + ' <br> ' + new Date().toLocaleDateString(); // putting a line break here, i think a thicker top bar would look better :D
     }, 700);
 }
 
@@ -286,4 +303,4 @@ function form_time(t) {
     return `${m}:${s < 10 ? '0' : ''}${s}`;
 }
 
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', init) || init();

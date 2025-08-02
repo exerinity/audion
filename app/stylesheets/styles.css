@@ -34,6 +34,7 @@ body {
     color: white;
     font-family: 'Chirp', sans-serif;
     overflow-x: hidden;
+    overflow: hidden;
 }
 
 h1,
@@ -99,6 +100,10 @@ strong {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .right {
@@ -408,4 +413,10 @@ strong {
     margin: 0;
     font-style: italic;
     opacity: 0.85;
+}
+
+a, a:visited, a:active, a:hover {
+    color: #1d9bf0;
+    text-decoration: none;
+    transition: color 0.2s;
 }

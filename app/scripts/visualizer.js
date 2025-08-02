@@ -12,7 +12,7 @@ function viz_ranco() {
 
 
 function viz_nt(value) {
-    intensity = value;
+    //intensity = value;
 }
 
 let frame_id = null;
@@ -83,7 +83,8 @@ function vis_init() {
             viz_z += viz_tx;
             viz_y += viz_ty;
 
-            ctx.font = '20px sans-serif';
+            ctx.font = "20px 'Chirp', sans-serif";
+            ctx.fontWeight = 'bold';
             const text = window.location.hostname;
             const metrics = ctx.measureText(text);
             const textWidth = metrics.width;

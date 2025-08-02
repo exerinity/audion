@@ -48,14 +48,15 @@ function get_meta(file) {
             document.getElementById('np2').innerHTML = metadata.title;
             document.getElementById('aod').innerHTML = '';
             document.getElementById('cover-art').classList.add('hidden');
-            throw_error("There is missing metadata, lyrics may not work");
+            throw_error("This file is missing sufficient metadata. Lyrics won't work - full metadata (title, artist, album, duration) is required!");
         }
     });
 }
 
 async function get_lyrics(trackName, artistName, albumName, duration) {
     lrc_wipe();
-    stat_up("Looking for lyrics...");
+    const start = new Date();
+    stat_up(`Querying lyrics for "${trackName}"...`);
     const lrc_con = document.getElementById('lyrics');
     lrc_con.innerHTML = '<div class="spinner"></div>';
     try {
@@ -65,7 +66,7 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
         const data = await response.json();
         if (response.ok && data.syncedLyrics) {
             lrc_data = lrc_parse(data.syncedLyrics);
-            stat_up("Found lyrics");
+            stat_up(`Found lyrics for "${trackName}" in ${new Date() - start}ms`);
             update_lyrics();
         } else if (response.ok && data.plainLyrics) {
             lrc_data = data.plainLyrics.split('\n').map(line => ({ time: 0, text: line }));
