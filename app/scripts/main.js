@@ -33,7 +33,12 @@ function throw_error(msg) {
     elements.err_tab.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ` + msg;
     console.error(msg);
     elements.err_tab.classList.remove('hidden');
-    setTimeout(() => elements.err_tab.classList.add('hidden'), 6000);
+    elements.err_tab.style.transition = 'opacity 1s ease';
+    elements.err_tab.style.opacity = '1';
+    setTimeout(() => {
+        elements.err_tab.style.opacity = '0';
+        setTimeout(() => elements.err_tab.classList.add('hidden'), 1000);
+    }, 5000);
 }
 
 let stat_calls = 0;
@@ -310,3 +315,10 @@ function form_time(t) {
 }
 
 document.addEventListener('DOMContentLoaded', init) || init();
+
+setTimeout(() => {
+    throw_error(`
+        <strong>Welcome!</strong><br>
+        This app is still an early work in progress - expect some bugs!<br>You can read more by pressing the <strong>Info</strong> button above,
+        or browse the <a href="https://github.com/exerinity/music" target="_blank">GitHub repository</a>!`)
+}, 6000);
