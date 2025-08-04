@@ -43,13 +43,14 @@ function vis_init() {
             let x = 0;
             for (let i = 0; i < len; i++) {
                 const bh = data[i] * intensity;
-                ctx.fillStyle = `rgb(${bh + 100}, 255, 255)`;
+                ctx.fillStyle = `rgb(0, ${bh + 100}, 0)`;
                 ctx.fillRect(x, canv.height - bh / 2, bw, bh / 2);
                 x += bw + 1;
             }
+
         } else if (viz_mo.value === 'waveform') {
             ctx.beginPath();
-            ctx.strokeStyle = '#6C00FF';
+            ctx.strokeStyle = '#09ff00ff';
             ctx.lineWidth = 2;
             const sliceWidth = canv.width / len;
             let x = 0;
@@ -67,7 +68,7 @@ function vis_init() {
             const centerY = canv.height / 2;
             const radius = Math.min(canv.width, canv.height) / 4;
             ctx.beginPath();
-            ctx.strokeStyle = '#6C00FF';
+            ctx.strokeStyle = '#00ff37ff';
             ctx.lineWidth = 2;
             for (let i = 0; i < len; i++) {
                 const angle = (i / len) * 2 * Math.PI;
@@ -103,6 +104,9 @@ function vis_init() {
             ctx.fillStyle = viz_col;
             ctx.fillText(text, viz_z, viz_y);
             ctx.restore();
+        }
+        else if (viz_mo.value === 'nonefr') {
+            null;
         }
     }
     draw();
