@@ -5,6 +5,7 @@ let viz_y = 100;
 let viz_tx = 0.3;
 let viz_ty = 0.3;
 let viz_col = viz_ranco();
+let viz_color = '#00ff00';
 
 function viz_ranco() {
     return `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`;
@@ -50,7 +51,7 @@ function vis_init() {
 
         } else if (viz_mo.value === 'waveform') {
             ctx.beginPath();
-            ctx.strokeStyle = '#09ff00ff';
+            ctx.strokeStyle = viz_color;
             ctx.lineWidth = 2;
             const sliceWidth = canv.width / len;
             let x = 0;
@@ -68,7 +69,7 @@ function vis_init() {
             const centerY = canv.height / 2;
             const radius = Math.min(canv.width, canv.height) / 4;
             ctx.beginPath();
-            ctx.strokeStyle = '#00ff37ff';
+            ctx.strokeStyle = viz_color;
             ctx.lineWidth = 2;
             for (let i = 0; i < len; i++) {
                 const angle = (i / len) * 2 * Math.PI;
