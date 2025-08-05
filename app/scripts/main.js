@@ -94,7 +94,7 @@ function play(fileOrUrl, name) {
             document.getElementById('plps').innerHTML = '<i class="fa-solid fa-pause"></i>';
             context_init(elements.player);
             vis_init();
-          //  eq_init();
+            //  eq_init();
             elements.title2.innerHTML = name;
             if (typeof fileOrUrl !== 'string') {
                 get_meta(fileOrUrl);
@@ -122,7 +122,7 @@ function init() {
         document.getElementById('app').remove();
         return;
     }
-   
+
     document.getElementById('app').classList.remove('hidden');
 
     elements.upload.addEventListener('change', function () {
@@ -136,8 +136,8 @@ function init() {
     elements.url.addEventListener('change', function () {
         const link = elements.url.value.trim();
         if (link) {
-                stat_up(`Loading: ${link}`);
-                play(link, link);
+            stat_up(`Loading: ${link}`);
+            play(link, link);
         }
     });
 
@@ -182,6 +182,38 @@ function init() {
             </ul>
         `);
     }));
+
+    document.getElementById('toys').addEventListener('click', debounce(() => {
+        msg(`
+        <h2>Toys</h2>
+        <p>Throw an error:</p>
+       <div style="display: flex; gap: 0.5rem; align-items: center; margin: 1rem 0;"><input id="cuserrinp" type="text" placeholder="Error message (can be ANYTHING)" style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;"><button id="cuserrbtn" style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Throw error</button></div>
+        <p>Visualizer color:</p>
+        <input type="color" id="vizcuscop" value="${viz_color}" style="width: 100%; height: 50px; border: none; cursor: pointer; background: none; margin: 1rem 0;">
+        <footer>More toys coming soon :D</footer>
+    `);
+
+        setTimeout(() => {
+            const btn = document.getElementById('cuserrbtn');
+            const input = document.getElementById('cuserrinp');
+            if (btn && input) {
+                btn.addEventListener('click', () => {
+                    const message = input.value.trim();
+                    if (message) throw_error(message);
+                });
+            }
+
+            const vizcusco = document.getElementById('vizcuscop');
+            if (vizcusco) {
+                vizcusco.addEventListener('input', () => {
+                    viz_color = vizcusco.value;
+                });
+            }
+        }, 0);
+    }));
+
+
+
     document.getElementById('info').addEventListener('click', debounce(() => {
         window.open('/info', '_blank');
     }));
@@ -266,10 +298,10 @@ function init() {
         stat_up(`Visualizer mode: ${elements.viz_mo.value}`);
     });
 
-   /* elements.eq_pre.addEventListener('change', () => {
-        eq_apply(elements.eq_pre.value);
-        stat_up(`Equalizer preset: ${elements.eq_pre.value}`);
-    });*/
+    /* elements.eq_pre.addEventListener('change', () => {
+         eq_apply(elements.eq_pre.value);
+         stat_up(`Equalizer preset: ${elements.eq_pre.value}`);
+     });*/
 
     document.addEventListener('keydown', (e) => {
         if (e.code === 'Space') {
