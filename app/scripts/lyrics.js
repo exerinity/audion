@@ -48,7 +48,7 @@ function get_meta(file) {
             document.getElementById('np2').innerHTML = metadata.title;
             document.getElementById('aod').innerHTML = '';
             document.getElementById('cover-art').classList.add('hidden');
-            throw_error("This file is missing sufficient metadata. Lyrics won't work - full metadata (title, artist, album, duration) is required!");
+            throw_error("This file is missing sufficient metadata, lyrics most likely won't work");
         }
     });
 }
@@ -81,7 +81,7 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
         stat_up("No lyrics found");
         lrc_con.innerHTML = '';
         lrc_data = [];
-        throw_error(e.message);
+        throw_error(`Lyrics could not load:<br>${e}<br>You are likely offline.`);
     }
 }
 

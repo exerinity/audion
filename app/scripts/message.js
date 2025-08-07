@@ -11,7 +11,7 @@ async function msg(text) {
     overlay.style.left = 0;
     overlay.style.width = '100vw';
     overlay.style.height = '100vh';
-    overlay.style.background = 0;
+    overlay.style.background = '#00000082';
     overlay.style.backdropFilter = 'blur(7px)';
     overlay.style.zIndex = 9999;
     overlay.style.display = 'flex';

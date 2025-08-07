@@ -44,7 +44,7 @@ function vis_init() {
             let x = 0;
             for (let i = 0; i < len; i++) {
                 const bh = data[i] * intensity;
-                ctx.fillStyle = `rgb(0, ${bh + 100}, 0)`;
+                ctx.fillStyle = viz_color;
                 ctx.fillRect(x, canv.height - bh / 2, bw, bh / 2);
                 x += bw + 1;
             }
