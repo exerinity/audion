@@ -17,10 +17,10 @@ function get_meta(file) {
                 throw_error("There is missing metadata, lyrics may not work");
             }
 
-            document.getElementById('artist').innerHTML = `<strong>${metadata.artist}</strong>`;
-            document.getElementById('album').innerHTML = `<strong>${metadata.album}</strong>`;
-            document.getElementById('np2').innerHTML = metadata.title;
-            document.getElementById('aod').innerHTML = `${metadata.title} by ${metadata.artist}`;
+            document.getElementById('artist').innerHTML = `<strong>${truncate(metadata.artist)}</strong>`;
+            document.getElementById('album').innerHTML = `<strong>${truncate(metadata.album)}</strong>`;
+            document.getElementById('np2').innerHTML = truncate(metadata.title);
+            document.title = `${truncate(metadata.title)} by ${truncate(metadata.artist)}`;
 
             const cover = document.getElementById('cover-art');
             if (metadata.picture) {
@@ -60,7 +60,7 @@ function get_meta(file) {
 async function get_lyrics(trackName, artistName, albumName, duration) {
     lrc_wipe();
     const start = new Date();
-    stat_up(`Querying lyrics for "${trackName}"...`);
+    stat_up(`<i class="fa-solid fa-magnifying-glass"></i> Searching lyrics...`);
     const lrc_con = document.getElementById('lyrics');
     lrc_con.innerHTML = '<div class="spinner"></div>';
     try {
@@ -70,19 +70,19 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
         const data = await response.json();
         if (response.ok && data.syncedLyrics) {
             lrc_data = lrc_parse(data.syncedLyrics);
-            stat_up(`Found lyrics for "${trackName}" in ${new Date() - start}ms`);
+            stat_up(`<i class="fa-solid fa-check"></i> Found lyrics!`);
             update_lyrics();
         } else if (response.ok && data.plainLyrics) {
             lrc_data = data.plainLyrics.split('\n').map(line => ({ time: 0, text: line }));
             update_lyrics();
-            stat_up("No timed lyrics found");
+            stat_up(`<i class="fa-solid fa-minus"></i> No timed lyrics found`);
         } else {
-            stat_up("No lyrics found");
+            stat_up(`<i class="fa-solid fa-xmark"></i> No lyrics found`);
             lrc_con.innerHTML = '';
             lrc_data = [];
         }
     } catch (e) {
-        stat_up("No lyrics found");
+        stat_up(`<i class="fa-solid fa-xmark"></i> Error loading lyrics`);
         lrc_con.innerHTML = '';
         lrc_data = [];
         throw_error(`Lyrics could not load:<br>${e}<br>You are likely offline.`);
