@@ -74,9 +74,6 @@ function debounce(fn) {
     };
 }
 
-stat_up("Loading...");
-
-
 function play(fileOrUrl, name) {
     lrc_wipe();
     if (!elements.success_sound.paused) {
@@ -181,6 +178,18 @@ function init() {
             <li><strong>L</strong>: Toggle loop</li>
             </ul>
         `);
+    }));
+
+    document.getElementById('cover-art').addEventListener('click', debounce(() => {
+        if (globalart) {
+            msg(`<img src="${globalart}" title="Click to open full image in a new tab" alt="Cover art" style="max-width: 100%; height: auto; border-radius: 8px; cursor: pointer;" id="msgart">`);
+            setTimeout(() => {
+                const img = document.getElementById('msgart');
+                if (img) {
+                    img.onclick = () => window.open(globalart, '_blank'); // using javascript, because base64 links can be massive and the preview takes up your entire screen
+                }
+            }, 0);
+        }
     }));
 
     document.getElementById('toys').addEventListener('click', debounce(() => {

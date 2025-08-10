@@ -158,6 +158,7 @@ strong {
     max-width: 150px;
     max-height: 150px;
     border-radius: 8px;
+    cursor: pointer;
 }
 
 .controls {

@@ -1,5 +1,6 @@
 let cur_file = null;
 let lrc_data = [];
+let globalart = '';
 
 const metadata = {};
 
@@ -30,9 +31,11 @@ function get_meta(file) {
                     binary += String.fromCharCode.apply(null, arr.subarray(i, i + cs));
                 }
                 const b64 = btoa(binary);
-                cover.src = `data:${metadata.picture.format};base64,${b64}`;
+                globalart = `data:${metadata.picture.format};base64,${b64}`;
+                cover.src = globalart;
                 cover.classList.remove('hidden');
             } else {
+                globalart = ''; 
                 cover.classList.add('hidden');
             }
 
@@ -48,6 +51,7 @@ function get_meta(file) {
             document.getElementById('np2').innerHTML = metadata.title;
             document.getElementById('aod').innerHTML = '';
             document.getElementById('cover-art').classList.add('hidden');
+            globalart = ''; 
             throw_error("This file is missing sufficient metadata, lyrics most likely won't work");
         }
     });
