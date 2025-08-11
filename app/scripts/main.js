@@ -40,7 +40,7 @@ function stat_up(msg, ac = true) {
         }
         stat_out = setTimeout(() => {
             if (!elements.player.src) {
-                elements.status.innerHTML = window.location.hostname || "music";
+                elements.status.innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Audion';
             } else if (elements.player.paused) {
                 elements.status.innerHTML = `<i class="fa-solid fa-circle-pause"></i> <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
             } else {
@@ -204,7 +204,7 @@ function init() {
 
 
     document.getElementById('info').addEventListener('click', debounce(() => {
-        window.open("https://github.com/exerinity/music", '_blank');
+        window.open("https://github.com/exerinity/audion", '_blank');
     }));
 
     let onrepeat = true;
@@ -249,7 +249,6 @@ function init() {
             }
         }
         throw_error(err_msg);
-        stat_up('<i class="fa-solid fa-octagon"></i> Error! Check the box below');
     });
 
     elements.player.addEventListener('timeupdate', () => {
@@ -340,11 +339,11 @@ function init() {
         } else if (e.code === 'ArrowLeft') {
             e.preventDefault();
             elements.player.currentTime -= e.shiftKey ? 1 : 10;
-            stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
+            stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
         } else if (e.code === 'ArrowRight') {
             e.preventDefault();
             elements.player.currentTime += e.shiftKey ? 1 : 10;
-            stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
+            stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
         } else if (e.code === 'KeyL') {
             document.getElementById('loop').click();
         } else if (e.code === 'ArrowUp') {

@@ -1,9 +1,3 @@
-/*
-  This script is carried over from my Discord bot's website: https://ex3.icu and fine-tuned for this site
-
-  I can re-use my own code... right?
-*/
-
 async function msg(text) {
     const overlay = document.createElement('div');
     overlay.style.position = 'fixed';
@@ -11,7 +5,7 @@ async function msg(text) {
     overlay.style.left = 0;
     overlay.style.width = '100vw';
     overlay.style.height = '100vh';
-    overlay.style.background = '#00000082';
+    overlay.style.background = '#00000034';
     overlay.style.backdropFilter = 'blur(7px)';
     overlay.style.zIndex = 9999;
     overlay.style.display = 'flex';
@@ -27,10 +21,24 @@ async function msg(text) {
     box.style.padding = '2rem 2.5rem 1.5rem 2.5rem';
     box.style.maxWidth = '420px';
     box.style.width = '90vw';
-    box.style.position = 'relative';
+    box.style.position = 'absolute';
     box.style.fontFamily = 'inherit';
     box.style.textAlign = 'center';
     box.style.animation = 'zin 0.2s ease';
+
+    const title = document.createElement('div');
+    title.innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Audion';
+    title.style.position = 'absolute';
+    title.style.top = '12px';
+    title.style.left = '16px';
+    title.style.fontSize = '1.2rem';
+    title.style.fontWeight = 'bold';
+    title.style.color = 'white';
+    title.style.cursor = 'move';
+    title.style.display = 'flex';
+    title.style.alignItems = 'center';
+    title.style.height = '24px';
+    title.style.userSelect = 'none';
 
     const close = document.createElement('button');
     close.innerHTML = '<i class="fa-solid fa-xmark"></i>';
@@ -59,6 +67,29 @@ async function msg(text) {
 
     close.onclick = removeOverlay;
 
+    let isDragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    title.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - box.getBoundingClientRect().left;
+        offsetY = e.clientY - box.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            box.style.left = `${e.clientX - offsetX}px`;
+            box.style.top = `${e.clientY - offsetY}px`;
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+    });
+
     const msg = document.createElement('div');
     msg.style.marginTop = '0.5rem';
     msg.style.fontSize = '1.08rem';
@@ -69,6 +100,7 @@ async function msg(text) {
 `;
     msg.querySelector('.bu').addEventListener('click', removeOverlay);
 
+    box.appendChild(title);
     box.appendChild(close);
     box.appendChild(msg);
     overlay.appendChild(box);

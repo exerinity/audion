@@ -1,38 +1,23 @@
 @font-face {
-    font-family: 'Chirp';
-    src: url('/app/fonts/chirp/chirp-regular-web.woff') format('woff');
-    font-weight: 400;
+    font-family: 'Inter';
+    src: url('/app/fonts/inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: 100 900;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Chirp';
-    src: url('/app/fonts/chirp/chirp-medium-web.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
+    font-family: 'Inter';
+    src: url('/app/fonts/inter/Inter-Italic-VariableFont_opsz,wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: italic;
 }
-
-@font-face {
-    font-family: 'Chirp';
-    src: url('/app/fonts/chirp/chirp-bold-web.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Chirp';
-    src: url('/app/fonts/chirp/chirp-heavy-web.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-}
-
 
 body {
     margin: 0;
     padding: 0;
     background-color: #1a1a1a;
     color: white;
-    font-family: 'Chirp', sans-serif;
+    font-family: 'Inter', sans-serif;
     overflow-x: hidden;
     overflow: hidden;
 }
