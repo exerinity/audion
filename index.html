@@ -1,35 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preconnect" href="https://ex3.icu">
     <link rel="preconnect" href="https://i.exerinity.com">
-    <link rel="canonical" href="https://audion.exerinity.com/"> <!-- See README.md. There are different mirrors but this is the canonical URL -->
+    <link rel="canonical" href="https://audion.exerinity.com/">
+    <!-- See README.md. There are different mirrors but this is the canonical URL -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="aod">Audion</title>
     <link rel="stylesheet" href="/app/stylesheets/styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsmediatags/3.9.5/jsmediatags.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="/app/scripts/jsmediatags.min.js"></script>
+    <script src="/app/scripts/app.js"></script>
+    <link rel="stylesheet" href="/app/stylesheets/fontawesome.css">
     <script src="/app/scripts/message.js"></script>
     <meta name="description" content="A semi-advanced music player that supports any audio file your browser does.">
     <meta name="keywords" content="music, player, audio, web audio api, visualizer, lyrics, jsmediatags">
     <meta name="author" content="exerinity.com">
-    <meta name="theme-color" content="#0066FF">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1DB954">
 </head>
+
 <body>
     <audio src="https://i.exerinity.com/Windows%2098%20Startup.mp3" autoplay id="sucsound" preload></audio>
     <audio src="https://i.exerinity.com/CHORD.flac" id="errsound" preload></audio>
     <div id="mobo_warn" class="hidden">
         <h1>Mobile is not supported</h1>
         <p>
-            Please use a desktop for the best experience. If you want to continue, request the desktop version on your browser.
+            Please use a desktop for the best experience. If you want to continue, request the desktop version on your
+            browser.
         </p>
     </div>
-    <noscript><div id="mobo_warn">
-        <h2>JavaScript is disabled</h2>
-        <p>This app will not work without JavaScript - please enable it to continue</p>
-    </div></noscript>
+    <noscript>
+        <div id="mobo_warn">
+            <h2>JavaScript is disabled</h2>
+            <p>This app will not work without JavaScript - please enable it to continue</p>
+        </div>
+    </noscript>
     <div id="app" class="hidden">
         <div class="header">
             <h3 id="status"></h3>
@@ -120,4 +128,5 @@
     <script src="/app/scripts/lyrics.js"></script>
     <script src="/app/scripts/error.js"></script>
 </body>
+
 </html>
