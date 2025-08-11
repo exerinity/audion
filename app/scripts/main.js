@@ -56,9 +56,9 @@ function stat_up(msg, ac = true) {
             if (!elements.player.src) {
                 elements.status.innerHTML = window.location.hostname || "music";
             } else if (elements.player.paused) {
-                elements.status.innerHTML = `<i class="fa-solid fa-circle-pause"></i> Now paused: <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
+                elements.status.innerHTML = `<i class="fa-solid fa-circle-pause"></i> <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
             } else {
-                elements.status.innerHTML = `<i class="fa-solid fa-circle-play"></i> Now playing: <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
+                elements.status.innerHTML = `<i class="fa-solid fa-circle-play"></i> <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
             }
             stat_out = null;
         }, 2000);
@@ -387,7 +387,7 @@ function init() {
             hour12: true,
             hour: 'numeric',
             minute: '2-digit'
-        }).toLowerCase() + ' <br> ' + new Date().toLocaleDateString(); // putting a line break here, i think a thicker top bar would look better :D
+        }).toLowerCase() + ' <br> ' + new Date().toLocaleDateString();
     }, 700);
 }
 
@@ -404,6 +404,27 @@ function truncate(text, truncate_max = 50) {
     }
     return text.slice(0, truncate_max) + '...';
 }
+
+
+function greet () {
+    const hour = new Date().getHours();
+    let greeting = 'Good ';
+    if (hour < 12) {
+        greeting += 'morning';
+    }
+    else if (hour < 18) {
+        greeting += 'afternoon';
+    }
+    else if (hour < 22) {
+        greeting += 'evening';
+    }
+    else {
+        greeting += 'night';
+    }
+    return '<i class="fa-solid fa-right-to-bracket"></i> ' + greeting + '!';
+}
+
+stat_up(greet());
 
 
 document.addEventListener('DOMContentLoaded', init) || init();
