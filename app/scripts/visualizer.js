@@ -13,7 +13,7 @@ function viz_ranco() {
 
 
 function viz_nt(value) {
-    //intensity = value;
+    //intensity = value
 }
 
 let frame_id = null;
