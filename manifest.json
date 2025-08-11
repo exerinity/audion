@@ -1,0 +1,16 @@
+{
+  "name": "Audion",
+  "short_name": "Audion",
+  "start_url": "index.html",
+  "display": "standalone",
+  "description": "A semi-advanced music player that supports any audio file your browser does.",
+  "background_color": "#000000",
+  "theme_color": "#1DB954",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "48x48 72x72 96x96 128x128 256x256",
+      "type": "image/x-icon"
+    }
+  ]
+}
