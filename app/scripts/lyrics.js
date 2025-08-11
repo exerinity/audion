@@ -34,6 +34,8 @@ function get_meta(file) {
                 globalart = `data:${metadata.picture.format};base64,${b64}`;
                 cover.src = globalart;
                 cover.classList.remove('hidden');
+                cover.title = metadata.album || metadata.title || 'Cover art';
+                cover.alt = `Cover art for ${metadata.album || metadata.title} by ${metadata.artist}`;
             } else {
                 globalart = ''; 
                 cover.classList.add('hidden');
