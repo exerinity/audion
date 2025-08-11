@@ -17,8 +17,8 @@
     <meta name="theme-color" content="#0066FF">
 </head>
 <body>
-    <audio src="https://i.exerinity.com/Windows%20XP%20Startup.flac" autoplay id="sucsound" preload></audio>
-    <audio src="https://i.exerinity.com/Windows%20XP%20Error.flac" id="errsound" preload></audio>
+    <audio src="https://i.exerinity.com/Windows%2098%20Startup.mp3" autoplay id="sucsound" preload></audio>
+    <audio src="https://i.exerinity.com/CHORD.flac" id="errsound" preload></audio>
     <div id="mobo_warn" class="hidden">
         <h1>Mobile is not supported</h1>
         <p>
@@ -38,7 +38,7 @@
             <div class="left">
                 <div class="inputs">
                     <div class="inputg">
-                        <label for="upload">Upload audio file, or drag-and-drop</label>
+                        <label for="upload">Upload audio file, or drag-and-drop...</label>
                         <input id="upload" type="file" accept="audio/*" class="files">
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                     <button id="loop" title="Toggle Loop Mode"><i class="fa-solid fa-repeat"></i></button>
                     <button id="hotkeys">Hotkeys</button>
                     <button id="toys">Toys</button>
-                    <button id="info" title="Show Info"><i class="fa-solid fa-info"></i></button>
+                    <button id="info" title="Open GitHub repo"><i class="fa-brands fa-github"></i></button>
                 </div>
                 <div class="sliders">
                     <div class="slidez">
@@ -117,5 +117,6 @@
     <script src="/app/scripts/audio.js"></script>
     <script src="/app/scripts/visualizer.js"></script>
     <script src="/app/scripts/lyrics.js"></script>
+    <script src="/app/scripts/error.js"></script>
 </body>
 </html>

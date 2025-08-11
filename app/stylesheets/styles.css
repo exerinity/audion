@@ -316,13 +316,14 @@ strong {
     font-weight: bold;
 }
 
-#error {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
+.error-box {
+    position: relative;
     background: #a00;
     padding: 10px 20px;
     border-radius: 4px;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: opacity 1s ease;
 }
 
 #statusbox {

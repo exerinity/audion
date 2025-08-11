@@ -27,20 +27,6 @@ const elements = {
     error_sound: document.getElementById('errsound'),
 };
 
-function throw_error(msg) {
-    elements.error_sound.currentTime = 0;
-    elements.error_sound.play();
-    elements.err_tab.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> ` + msg;
-    console.error(msg);
-    elements.err_tab.classList.remove('hidden');
-    elements.err_tab.style.transition = 'opacity 1s ease';
-    elements.err_tab.style.opacity = '1';
-    setTimeout(() => {
-        elements.err_tab.style.opacity = '0';
-        setTimeout(() => elements.err_tab.classList.add('hidden'), 1000);
-    }, 5000);
-}
-
 let stat_calls = 0;
 let stat_out = null;
 
@@ -129,14 +115,6 @@ function init() {
             play(file, file.name);
         }
     });
-
-    /*  elements.url.addEventListener('change', function () {
-          const link = elements.url.value.trim();
-          if (link) {
-              stat_up(`Loading: ${link}`);
-              play(link, link);
-          }
-      }); */
 
     document.getElementById('plps').addEventListener('click', debounce(() => {
         if (elements.player.paused) {
