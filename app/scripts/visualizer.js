@@ -87,7 +87,7 @@ function vis_init() {
 
             ctx.font = "20px 'Chirp', sans-serif";
             ctx.fontWeight = 'bold';
-            const text = window.location.hostname;
+            const text = 'audion';
             const metrics = ctx.measureText(text);
             const textWidth = metrics.width;
             const textHeight = 20;
