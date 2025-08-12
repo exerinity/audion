@@ -27,7 +27,6 @@ async function msg(text) {
     box.style.animation = 'zin 0.2s ease';
 
     const title = document.createElement('div');
-    title.innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Audion';
     title.style.position = 'absolute';
     title.style.top = '12px';
     title.style.left = '16px';
@@ -39,6 +38,14 @@ async function msg(text) {
     title.style.alignItems = 'center';
     title.style.height = '24px';
     title.style.userSelect = 'none';
+
+    const tt = "Audion";
+    let ci = 0;
+
+    const highlight = () => {const ht = tt.split("").map((c, i) =>i === ci? `<span style="color: #ff7c24d0;">${c}</span>`: c).join("");title.innerHTML = `<i class="fa-solid fa-tower-broadcast" style="color: #ff7c24d0;"></i> ${ht}`;ci = (ci + 1) % tt.length;};
+
+    highlight();
+    setInterval(highlight, 200);
 
     const close = document.createElement('button');
     close.innerHTML = '<i class="fa-solid fa-xmark"></i>';
