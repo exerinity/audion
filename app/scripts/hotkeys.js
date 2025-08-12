@@ -1,0 +1,42 @@
+document.addEventListener('keydown', (e) => {
+    let hi = '<i class="fa-solid fa-volume-high"></i>';
+    let med = '<i class="fa-solid fa-volume-low"></i>';
+    let low = '<i class="fa-solid fa-volume-off"></i>';
+    let mute = '<i class="fa-solid fa-volume-xmark"></i>';
+
+    let icon;
+    if (elements.player.volume === 0) {
+        icon = mute;
+    } else if (elements.player.volume < 0.33) {
+        icon = low;
+    } else if (elements.player.volume < 0.66) {
+        icon = med;
+    } else {
+        icon = hi;
+    }
+
+    if (e.code === 'Space') {
+        e.preventDefault();
+        document.getElementById('plps').click();
+    } else if (e.code === 'ArrowLeft') {
+        e.preventDefault();
+        elements.player.currentTime -= e.shiftKey ? 1 : 10;
+        stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
+    } else if (e.code === 'ArrowRight') {
+        e.preventDefault();
+        elements.player.currentTime += e.shiftKey ? 1 : 10;
+        stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
+    } else if (e.code === 'KeyL') {
+        document.getElementById('loop').click();
+        } else if (e.code === 'ArrowUp') {
+        e.preventDefault();
+        elements.vol.value = Math.min(2, parseFloat(elements.vol.value) + 0.02);
+        elements.player.volume = elements.vol.value / 2;
+        stat_up(`${icon} Volume: ${(elements.player.volume * 100).toFixed(0)}%`);
+        } else if (e.code === 'ArrowDown') {
+        e.preventDefault();
+        elements.vol.value = Math.max(0, parseFloat(elements.vol.value) - 0.02);
+        elements.player.volume = elements.vol.value / 2;
+        stat_up(`${icon} Volume: ${(elements.player.volume * 100).toFixed(0)}%`);
+        }
+});

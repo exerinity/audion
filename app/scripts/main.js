@@ -116,97 +116,6 @@ function init() {
         }
     });
 
-    document.getElementById('plps').addEventListener('click', debounce(() => {
-        if (elements.player.paused) {
-            elements.player.play();
-            document.getElementById('plps').innerHTML = '<i class="fa-solid fa-pause"></i>';
-            stat_up('<i class="fa-solid fa-circle-play"></i> Playing...');
-        } else {
-            elements.player.pause();
-            document.getElementById('plps').innerHTML = '<i class="fa-solid fa-play"></i>';
-            stat_up('<i class="fa-solid fa-circle-pause"></i> Paused');
-        }
-    }));
-
-    document.getElementById('rwd').addEventListener('click', debounce(() => {
-        elements.player.currentTime -= 10;
-        stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
-    }));
-
-    document.getElementById('fwd').addEventListener('click', debounce(() => {
-        elements.player.currentTime += 10;
-        stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)}`);
-    }));
-
-    document.getElementById('stop').addEventListener('click', debounce(() => {
-        elements.player.currentTime = 0;
-        stat_up('<i class="fa-solid fa-arrow-rotate-left"></i> Restarted the track');
-    }));
-
-    document.getElementById('hotkeys').addEventListener('click', debounce(() => {
-        msg(`
-            <h2>Hotkeys</h2>
-            <ul style="list-style-type: none; padding: 0;">
-            <li><strong>Space</strong>: Toggle playback (Play/Pause)</li>
-            <li><strong>Arrow Left</strong>: Seek backward 10 seconds</li>
-            <li><strong>Shift + Arrow Left</strong>: Seek backward 1 second</li>
-            <li><strong>Arrow Right</strong>: Seek forward 10 seconds</li>
-            <li><strong>Shift + Arrow Right</strong>: Seek forward 1 second</li>
-            <li><strong>Arrow Up</strong>: Increase volume by 2%</li>
-            <li><strong>Arrow Down</strong>: Decrease volume by 2%</li>
-            <li><strong>L</strong>: Toggle loop</li>
-            </ul>
-        `);
-    }));
-
-    document.getElementById('cover-art').addEventListener('click', debounce(() => {
-        if (globalart) {
-            msg(`<img src="${globalart}" title="Click to open full image in a new tab" alt="Cover art" style="max-width: 100%; height: auto; border-radius: 8px; cursor: pointer;" id="msgart">`);
-            setTimeout(() => {
-                const img = document.getElementById('msgart');
-                if (img) {
-                    img.onclick = () => window.open(globalart, '_blank'); // using javascript, because base64 links can be massive and the preview takes up your entire screen
-                }
-            }, 0);
-        }
-    }));
-
-    document.getElementById('toys').addEventListener('click', debounce(() => {
-        msg(`
-        <h2>Toys</h2>
-        <p>Throw an error:</p>
-        <div style="display: flex; gap: 0.5rem; align-items: center; margin: 1rem 0;"><input id="cuserrinp" type="text" placeholder="Error message (can be ANYTHING)" style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;"><button id="cuserrbtn" style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Throw error</button></div>
-        <p>Visualizer color:</p>
-        <input type="color" id="vizcuscop" value="${viz_color}" style="width: 100%; height: 50px; border: none; cursor: pointer; background: none; margin: 1rem 0;">
-        <footer>More toys coming soon :D</footer>
-    `);
-
-        setTimeout(() => {
-            const btn = document.getElementById('cuserrbtn');
-            const input = document.getElementById('cuserrinp');
-            if (btn && input) {
-                btn.addEventListener('click', () => {
-                    const message = input.value.trim();
-                    if (message) throw_error(message);
-                    else throw_error('You must enter a message, that\'s <i>your</i> error!'); // ha get iiiittttttttttttttttttttttttttt
-                });
-            }
-
-            const vizcusco = document.getElementById('vizcuscop');
-            if (vizcusco) {
-                vizcusco.addEventListener('input', () => {
-                    viz_color = vizcusco.value;
-                });
-            }
-        }, 0);
-    }));
-
-
-
-    document.getElementById('info').addEventListener('click', debounce(() => {
-        window.open("https://github.com/exerinity/audion", '_blank');
-    }));
-
     let onrepeat = true;
     elements.player.loop = true;
     const rep_button = document.getElementById('loop');
@@ -281,7 +190,7 @@ function init() {
             icon = hi;
         }
 
-        stat_up(`${icon} Volume: ${elements.player.volume.toFixed(2)}`);
+        stat_up(`${icon} Volume: ${(elements.player.volume * 100).toFixed(0)}%`);
     });
 
     elements.speed.addEventListener('input', () => {
@@ -311,54 +220,6 @@ function init() {
         stat_up(`<i class="fa-solid fa-chart-simple"></i> Visualizer mode: ${elements.viz_mo.value}`);
     });
 
-    /* elements.eq_pre.addEventListener('change', () => {
-         eq_apply(elements.eq_pre.value);
-         stat_up(`Equalizer preset: ${elements.eq_pre.value}`);
-     });*/
-
-    document.addEventListener('keydown', (e) => {
-        let hi = '<i class="fa-solid fa-volume-high"></i>';
-        let med = '<i class="fa-solid fa-volume-low"></i>';
-        let low = '<i class="fa-solid fa-volume-off"></i>';
-        let mute = '<i class="fa-solid fa-volume-xmark"></i>';
-
-        let icon;
-        if (elements.player.volume === 0) {
-            icon = mute;
-        } else if (elements.player.volume < 0.33) {
-            icon = low;
-        } else if (elements.player.volume < 0.66) {
-            icon = med;
-        } else {
-            icon = hi;
-        }
-
-        if (e.code === 'Space') {
-            e.preventDefault();
-            document.getElementById('plps').click();
-        } else if (e.code === 'ArrowLeft') {
-            e.preventDefault();
-            elements.player.currentTime -= e.shiftKey ? 1 : 10;
-            stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
-        } else if (e.code === 'ArrowRight') {
-            e.preventDefault();
-            elements.player.currentTime += e.shiftKey ? 1 : 10;
-            stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
-        } else if (e.code === 'KeyL') {
-            document.getElementById('loop').click();
-        } else if (e.code === 'ArrowUp') {
-            e.preventDefault();
-            elements.vol.value = Math.min(2, parseFloat(elements.vol.value) + 0.02);
-            elements.player.volume = elements.vol.value / 2;
-            stat_up(`${icon} Volume: ${elements.player.volume.toFixed(2)}`);
-        } else if (e.code === 'ArrowDown') {
-            e.preventDefault();
-            elements.vol.value = Math.max(0, parseFloat(elements.vol.value) - 0.02);
-            elements.player.volume = elements.vol.value / 2;
-            stat_up(`${icon} Volume: ${elements.player.volume.toFixed(2)}`);
-        }
-    });
-
     setInterval(() => {
         document.getElementById('today').innerHTML = new Date().toLocaleTimeString('en-US', {
             hour12: true,
@@ -383,25 +244,7 @@ function truncate(text, truncate_max = 50) {
 }
 
 
-function greet () {
-    const hour = new Date().getHours();
-    let greeting = 'Good ';
-    if (hour < 12) {
-        greeting += 'morning';
-    }
-    else if (hour < 18) {
-        greeting += 'afternoon';
-    }
-    else if (hour < 22) {
-        greeting += 'evening';
-    }
-    else {
-        greeting += 'night';
-    }
-    return '<i class="fa-solid fa-right-to-bracket"></i> ' + greeting + '!';
-}
-
-stat_up(greet());
+stat_up('<i class="fa-solid fa-tower-broadcast fa-beat" style="color: #c4b0fd;"></i> Welcome to Audion!');
 
 
 document.addEventListener('DOMContentLoaded', init) || init();
