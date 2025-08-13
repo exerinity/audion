@@ -61,7 +61,6 @@ function get_meta(file) {
 
 async function get_lyrics(trackName, artistName, albumName, duration) {
     lrc_wipe();
-    const start = new Date();
     stat_up(`<i class="fa-solid fa-magnifying-glass"></i> Searching lyrics...`);
     const lrc_con = document.getElementById('lyrics');
     lrc_con.innerHTML = '<div class="spinner"></div>';
@@ -70,7 +69,10 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
             `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artistName)}&track_name=${encodeURIComponent(trackName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`,
         );
         const data = await response.json();
-        if (response.ok && data.syncedLyrics) {
+        if (response.ok && data.instrumental) {
+            stat_up(`<i class="fa-solid fa-microphone-lines-slash"></i> This song is an instrumental`);
+            return lrc_data = [lrc_parse(`Instrumental`)[0]];
+        } else if (response.ok && data.syncedLyrics) {
             lrc_data = lrc_parse(data.syncedLyrics);
             stat_up(`<i class="fa-solid fa-check"></i> Found lyrics!`);
             update_lyrics();
