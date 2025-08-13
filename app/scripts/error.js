@@ -37,5 +37,4 @@ function throw_error(msg) {
     elements.error_sound.play();
 
     console.error(msg);
-    stat_up('<i class="fa-solid fa-triangle-exclamation"></i> Error! Check the box below');
 }
