@@ -110,13 +110,25 @@ function lrc_parse(syncedLyrics) {
 function lrc_play(lrc_currents, act_index) {
     const lrc_con = document.getElementById('lyrics');
     lrc_con.innerHTML = '';
+    const player = document.getElementById('player');
+
     lrc_currents.forEach((line) => {
         const p = document.createElement('p');
         p.textContent = line.text || ' ';
         p.dataset.index = line.ogindex;
+        p.dataset.time = line.time;
+        p.style.cursor = 'pointer';
+
         if (line.ogindex === act_index) {
             p.classList.add('active');
         }
+
+        p.addEventListener('click', () => {
+            if (line.time > 0) {
+                player.currentTime = line.time;
+            }
+        });
+
         lrc_con.appendChild(p);
     });
 }
