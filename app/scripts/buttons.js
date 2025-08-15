@@ -57,20 +57,42 @@ document.getElementById('toys').addEventListener('click', debounce(() => {
     msg(`
         <h2>Toys</h2>
         <p>Throw an error:</p>
-        <div style="display: flex; gap: 0.5rem; align-items: center; margin: 1rem 0;"><input id="cuserrinp" type="text" placeholder="Error message (can be ANYTHING)" style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;"><button id="cuserrbtn" style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">Throw error</button></div>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0;">
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <input id="cuserrinp" type="text" placeholder="Error message (can be ANYTHING)" 
+                    style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;">
+                <button id="cuserrbtn" 
+                    style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+                    Throw error
+                </button>
+            </div>
+            <label style="display: flex;">
+                <input type="checkbox" id="cuserrsuccess">
+                Success
+            </label>
+        </div>
+
         <p>Visualizer color:</p>
-        <input type="color" id="vizcuscop" value="${viz_color}" style="width: 100%; height: 50px; border: none; cursor: pointer; background: none; margin: 1rem 0;">
+        <input type="color" id="vizcuscop" value="${viz_color}" 
+            style="width: 100%; height: 50px; border: none; cursor: pointer; background: none; margin: 1rem 0;">
         <footer>More toys coming soon :D</footer>
     `);
 
     setTimeout(() => {
         const btn = document.getElementById('cuserrbtn');
         const input = document.getElementById('cuserrinp');
+        const sch = document.getElementById('cuserrsuccess');
+
         if (btn && input) {
             btn.addEventListener('click', () => {
                 const message = input.value.trim();
-                if (message) throw_error(message);
-                else throw_error('You must enter a message, that\'s <i>your</i> error!'); // ha get iiiittttttttttttttttttttttttttt
+                const succ = sch?.checked || false;
+
+                if (message) {
+                    throw_error(message, succ);
+                } else {
+                    throw_error('You must enter a message, that\'s <i>your</i> error!', succ);
+                }
             });
         }
 
@@ -82,6 +104,7 @@ document.getElementById('toys').addEventListener('click', debounce(() => {
         }
     }, 0);
 }));
+
 
 
 
