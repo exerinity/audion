@@ -64,26 +64,29 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
     stat_up(`<i class="fa-solid fa-magnifying-glass"></i> Searching lyrics...`);
     const lrc_con = document.getElementById('lyrics');
     lrc_con.innerHTML = '<div class="spinner"></div>';
+
     try {
         const response = await fetch(
-            `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artistName)}&track_name=${encodeURIComponent(trackName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`,
+            `https://lyricsproxy.exerinity.workers.dev/?artist=${encodeURIComponent(artistName)}&track=${encodeURIComponent(trackName)}`
         );
-        const data = await response.json();
-        if (response.ok && data.instrumental) {
-            stat_up(`<i class="fa-solid fa-microphone-lines-slash"></i> This song is an instrumental`);
-            return lrc_data = [lrc_parse(`Instrumental`)[0]];
-        } else if (response.ok && data.syncedLyrics) {
-            lrc_data = lrc_parse(data.syncedLyrics);
-            stat_up(`<i class="fa-solid fa-check"></i> Found lyrics!`);
-            update_lyrics();
-        } else if (response.ok && data.plainLyrics) {
-            lrc_data = data.plainLyrics.split('\n').map(line => ({ time: 0, text: line }));
-            update_lyrics();
-            stat_up(`<i class="fa-solid fa-minus"></i> No timed lyrics found`);
-        } else {
+
+        if (!response.ok) {
             stat_up(`<i class="fa-solid fa-xmark"></i> No lyrics found`);
             lrc_con.innerHTML = '';
             lrc_data = [];
+            return;
+        }
+
+        const lrcText = await response.text();
+
+        if (lrcText.trim().toLowerCase() === "no timed lyrics available") {
+            lrc_data = [{ time: 0, text: "No timed lyrics available" }];
+            update_lyrics();
+            stat_up(`<i class="fa-solid fa-minus"></i> No timed lyrics found`);
+        } else {
+            lrc_data = lrc_parse(lrcText);
+            stat_up(`<i class="fa-solid fa-check"></i> Found lyrics!`);
+            update_lyrics();
         }
     } catch (e) {
         stat_up(`<i class="fa-solid fa-xmark"></i> Error loading lyrics`);
@@ -92,6 +95,7 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
         throw_error(`Lyrics could not load:<br>${e}<br>You are likely offline.`);
     }
 }
+
 
 function lrc_parse(syncedLyrics) {
     const lines = syncedLyrics.split('\n').filter(line => line.trim());
