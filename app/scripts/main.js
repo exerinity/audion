@@ -77,6 +77,7 @@ function play(fileOrUrl, name) {
             document.getElementById('plps').innerHTML = '<i class="fa-solid fa-pause"></i>';
             context_init(elements.player);
             vis_init();
+            tabtitle();
             elements.title2.innerHTML = name;
             if (typeof fileOrUrl !== 'string') {
                 get_meta(fileOrUrl);
