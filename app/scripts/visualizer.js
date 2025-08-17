@@ -81,6 +81,16 @@ function vis_init() {
             }
             ctx.closePath();
             ctx.stroke();
+        }
+        else if (viz_mo.value === 'spectrum') {
+            const bw = canv.width / len;
+            let x = 0;
+            for (let i = 0; i < len; i++) {
+                const bh = (data[i] / 255) * canv.height * intensity;
+                ctx.fillStyle = viz_color;
+                ctx.fillRect(x, canv.height - bh, bw, bh);
+                x += bw;
+            }
         } else if (viz_mo.value === 'none') {
             viz_z += viz_tx;
             viz_y += viz_ty;
