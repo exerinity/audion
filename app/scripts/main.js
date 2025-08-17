@@ -77,7 +77,6 @@ function play(fileOrUrl, name) {
             document.getElementById('plps').innerHTML = '<i class="fa-solid fa-pause"></i>';
             context_init(elements.player);
             vis_init();
-            //  eq_init();
             elements.title2.innerHTML = name;
             if (typeof fileOrUrl !== 'string') {
                 get_meta(fileOrUrl);
@@ -134,9 +133,13 @@ function init() {
             cancelAnimationFrame(frame_id);
         }
         frame_id = requestAnimationFrame(vis_init);
+
+        setInterval(tabtitle, 5000);
     });
 
     elements.player.addEventListener('pause', () => {
+        clearInterval(tabtitle);
+        document.title = 'Audion';
         if (frame_id) {
             cancelAnimationFrame(frame_id);
             frame_id = null;

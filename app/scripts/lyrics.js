@@ -20,7 +20,6 @@ function get_meta(file) {
             document.getElementById('artist').innerHTML = `<strong>${truncate(metadata.artist)}</strong>`;
             document.getElementById('album').innerHTML = `<strong>${truncate(metadata.album)}</strong>`;
             document.getElementById('np2').innerHTML = truncate(metadata.title);
-            document.title = `${truncate(metadata.title)} by ${truncate(metadata.artist)} / Audion`;
 
             const cover = document.getElementById('cover-art');
             if (metadata.picture) {
