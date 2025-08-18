@@ -244,7 +244,7 @@ function truncate(text, truncate_max = 50) {
 }
 
 
-stat_up('<i class="fa-solid fa-tower-broadcast fa-beat" style="color: #ff7c24d0;"></i> Welcome to Audion!');
+stat_up('<i class="fa-solid fa-tower-broadcast fa-beat" style="color: #8000ff;"></i> Welcome to Audion!');
 
 
 document.addEventListener('DOMContentLoaded', init) || init();

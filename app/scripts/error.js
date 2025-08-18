@@ -11,7 +11,7 @@ document.body.appendChild(err_container);
 function throw_error(msg, success = false) {
     const err_box = document.createElement('div');
     err_box.className = 'error-box';
-    err_box.style.background = success ? '#238600' : '#860000';
+    err_box.style.background = success ? '#8000ff' : '#860000';
     err_box.style.color = 'white';
     err_box.style.padding = '10px 20px';
     err_box.style.borderRadius = '4px';
