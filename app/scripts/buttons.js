@@ -53,29 +53,52 @@ document.getElementById('cover-art').addEventListener('click', debounce(() => {
     }
 }));
 
+document.getElementById('viscolchange').addEventListener('click', debounce(() => {
+    const button = document.getElementById('viscolchange');
+    const colchange = document.createElement('input');
+    colchange.type = 'color';
+    colchange.value = viz_color;
+    colchange.style.position = 'absolute';
+    colchange.style.left = `${button.offsetLeft}px`;
+    colchange.style.top = `${button.offsetTop + button.offsetHeight}px`;
+    colchange.style.zIndex = '1000';
+    colchange.style.width = '100px';
+    colchange.style.height = '50px';
+    colchange.style.border = 'none';
+    colchange.style.cursor = 'pointer';
+    colchange.style.background = 'none';
+    document.body.appendChild(colchange);
+    colchange.addEventListener('input', () => {
+        viz_color = colchange.value;
+        button.style.color = viz_color;
+        stat_up(`<i class="fa-solid fa-palette"></i> Visualizer color set to: <span style="color: ${viz_color};">${viz_color}</span>`);
+        if (document.body.contains(colchange)) {
+            document.body.removeChild(colchange);
+        }
+    });
+    colchange.addEventListener('blur', () => {
+        document.body.removeChild(colchange);
+    });
+}));
+
 document.getElementById('toys').addEventListener('click', debounce(() => {
     msg(`
         <h2>Toys</h2>
         <p>Throw an error:</p>
         <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0;">
             <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <input id="cuserrinp" type="text" placeholder="Error message (can be ANYTHING)" 
+                <input id="cuserrinp" type="text" placeholder="Error message" 
                     style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;">
                 <button id="cuserrbtn" 
                     style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
-                    Throw error
+                    Throw!
                 </button>
             </div>
             <label style="display: flex;">
                 <input type="checkbox" id="cuserrsuccess">
-                Success
+                Success? (purple, no error sound)
             </label>
         </div>
-
-        <p>Visualizer color:</p>
-        <input type="color" id="vizcuscop" value="${viz_color}" 
-            style="width: 100%; height: 50px; border: none; cursor: pointer; background: none; margin: 1rem 0;">
-        <footer>More toys coming soon :D</footer>
     `);
 
     setTimeout(() => {
@@ -93,13 +116,6 @@ document.getElementById('toys').addEventListener('click', debounce(() => {
                 } else {
                     throw_error('You must enter a message, that\'s <i>your</i> error!', succ);
                 }
-            });
-        }
-
-        const vizcusco = document.getElementById('vizcuscop');
-        if (vizcusco) {
-            vizcusco.addEventListener('input', () => {
-                viz_color = vizcusco.value;
             });
         }
     }, 0);
