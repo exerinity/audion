@@ -62,7 +62,7 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
     lrc_wipe();
     stat_up(`<i class="fa-solid fa-magnifying-glass"></i> Searching lyrics...`);
     const lrc_con = document.getElementById('lyrics');
-    lrc_con.innerHTML = '<div class="spinner"></div>';
+    lrc_con.innerHTML = 'Loading...';
     try {
         const response = await fetch(
             `https://lrclib.net/api/get?artist_name=${encodeURIComponent(artistName)}&track_name=${encodeURIComponent(trackName)}&album_name=${encodeURIComponent(albumName)}&duration=${duration}`,
@@ -70,6 +70,7 @@ async function get_lyrics(trackName, artistName, albumName, duration) {
         const data = await response.json();
         if (response.ok && data.instrumental) {
             stat_up(`<i class="fa-solid fa-microphone-lines-slash"></i> This song is an instrumental`);
+            lrc_con.innerHTML = '';
             return lrc_data = [lrc_parse(`Instrumental`)[0]];
         } else if (response.ok && data.syncedLyrics) {
             lrc_data = lrc_parse(data.syncedLyrics);
@@ -146,7 +147,7 @@ function update_lyrics() {
     }
 
     const lrc_currents = [];
-    let lrc_amount = 8;
+    let lrc_amount = 16;
     let half = Math.floor(lrc_amount / 2);
 
     let lrc_si = Math.max(0, act_index - half);
@@ -159,6 +160,14 @@ function update_lyrics() {
     if (act_index > lrc_data.length - half - 1) {
         lrc_si = Math.max(0, lrc_data.length - lrc_amount);
         lrc_en = lrc_data.length - 1;
+    }
+
+    if (lrc_en - lrc_si + 1 < lrc_amount && lrc_data.length >= lrc_amount) {
+        if (lrc_si === 0) {
+            lrc_en = Math.min(lrc_amount - 1, lrc_data.length - 1);
+        } else if (lrc_en === lrc_data.length - 1) {
+            lrc_si = Math.max(0, lrc_data.length - lrc_amount);
+        }
     }
 
     for (let i = lrc_si; i <= lrc_en; i++) {
