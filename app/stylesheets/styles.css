@@ -425,3 +425,9 @@ a, a:visited, a:active, a:hover {
 .pop button:hover {
     background: #555;
 }
+
+a, a:visited, a:active, a:hover {
+    color: #cfcfcf;
+    text-decoration: none;
+    transition: color 0.2s;
+}

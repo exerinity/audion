@@ -72,9 +72,6 @@ document.getElementById('viscolchange').addEventListener('click', debounce(() =>
         viz_color = colchange.value;
         button.style.color = viz_color;
         stat_up(`<i class="fa-solid fa-palette"></i> Visualizer color set to: <span style="color: ${viz_color};">${viz_color}</span>`);
-        if (document.body.contains(colchange)) {
-            document.body.removeChild(colchange);
-        }
     });
     colchange.addEventListener('blur', () => {
         document.body.removeChild(colchange);
