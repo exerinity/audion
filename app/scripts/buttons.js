@@ -37,6 +37,7 @@ document.getElementById('hotkeys').addEventListener('click', debounce(() => {
             <li><strong>Arrow Up</strong>: Increase volume by 2%</li>
             <li><strong>Arrow Down</strong>: Decrease volume by 2%</li>
             <li><strong>L</strong>: Toggle loop</li>
+            <li><strong>R</strong>: Restart track</li>
             </ul>
         `);
 }));
@@ -47,7 +48,16 @@ document.getElementById('cover-art').addEventListener('click', debounce(() => {
         setTimeout(() => {
             const img = document.getElementById('msgart');
             if (img) {
-                img.onclick = () => window.open(globalart, '_blank'); // using javascript, because base64 links can be massive and the preview takes up your entire screen
+                img.onclick = () => {
+                    const ua = navigator.userAgent;
+                    if (ua.includes('Firefox')) {
+                        window.open(globalart, '_blank');
+                    } else if (ua.includes('Chrome')) {
+                        return msg(`You will need to right-click the image and select <strong>Open image in new tab</strong> on Chrome.<br><small>For some reason, on Chrome, with base64 encoded images, <strong>window.open()</strong> gives you <strong>about:blank</strong> instead of the image.</small>`);
+                    } else {
+                        window.open(globalart, '_blank');
+                    }
+                };
             }
         }, 0);
     }
