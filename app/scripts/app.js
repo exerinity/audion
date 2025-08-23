@@ -2,7 +2,6 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
       const registration = await navigator.serviceWorker.register('/sw.js');
-      throw_error('Welcome to Audion!', true);
       console.log('SW registered:', registration.scope);
 
       if (registration.waiting && typeof throw_error === 'function') {
