@@ -42,9 +42,9 @@ function stat_up(msg, ac = true) {
             if (!elements.player.src) {
                 elements.status.innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Audion';
             } else if (elements.player.paused) {
-                elements.status.innerHTML = `<i class="fa-solid fa-circle-pause"></i> <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
+                elements.status.innerHTML = `<i class="fa-solid fa-circle-pause"></i> <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
             } else {
-                elements.status.innerHTML = `<i class="fa-solid fa-circle-play"></i> <strong>${truncate(metadata.title || 'Unknown track')}</strong> by ${truncate(metadata.artist || 'Unknown artist')}`;
+                elements.status.innerHTML = `<i class="fa-solid fa-circle-play"></i> <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
             }
             stat_out = null;
         }, 2000);
@@ -238,9 +238,13 @@ function form_time(t) {
 
 function truncate(text, truncate_max = 50) {
     if (text.length <= truncate_max) {
-        return text;
+        return `<span>${text}</span>`;
     }
-    return text.slice(0, truncate_max) + '...';
+    return `
+        <div class="mqcont">
+            <div class="mqtext">${text}</div>
+        </div>
+    `;
 }
 
 
