@@ -91,43 +91,89 @@ document.getElementById('viscolchange').addEventListener('click', debounce(() =>
 document.getElementById('toys').addEventListener('click', debounce(() => {
     msg(`
         <h2>Toys</h2>
-        <p>Throw an error:</p>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0;">
-            <div style="display: flex; gap: 0.5rem; align-items: center;">
-                <input id="cuserrinp" type="text" placeholder="Error message" 
-                    style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;">
-                <button id="cuserrbtn" 
-                    style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
-                    Throw!
-                </button>
+        <div style="display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0;">
+            <div>
+                <p style="margin: 0 0 0.5rem 0;">Throw an error:</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input id="cuserrinp" type="text" placeholder="Error message" 
+                        style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;">
+                    <button id="cusbtn1" 
+                        style="padding: 10px 20px; background: #c0392b; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+                        Throw!
+                    </button>
+                </div>
             </div>
-            <label style="display: flex;">
-                <input type="checkbox" id="cuserrsuccess">
-                Success? (purple, no error sound)
-            </label>
+
+            <div>
+                <p style="margin: 0 0 0.5rem 0;">Push a status:</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input id="statinp" type="text" placeholder="Status message" 
+                        style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;">
+                    <button id="btn2" 
+                        style="padding: 10px 20px; background: #2980b9; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+                        Send
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <p style="margin: 0 0 0.5rem 0;">Show a message popup:</p>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <input id="msginp" type="text" placeholder="Dialog HTML or text" 
+                        style="flex: 1; padding: 0.5rem; border-radius: 6px; border: 1px solid #444; background: #2a2a2a; color: white;">
+                    <button id="msgbtn" 
+                        style="padding: 10px 20px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; white-space: nowrap;">
+                        Show
+                    </button>
+                </div>
+            </div>
         </div>
     `);
 
     setTimeout(() => {
-        const btn = document.getElementById('cuserrbtn');
-        const input = document.getElementById('cuserrinp');
-        const sch = document.getElementById('cuserrsuccess');
+        const btn1 = document.getElementById('cusbtn1');
+        const input1 = document.getElementById('cuserrinp');
 
-        if (btn && input) {
-            btn.addEventListener('click', () => {
-                const message = input.value.trim();
-                const succ = sch?.checked || false;
+        const btn2 = document.getElementById('btn2');
+        const input2 = document.getElementById('statinp');
 
+        const btn3 = document.getElementById('msgbtn');
+        const input3 = document.getElementById('msginp');
+
+        if (btn1 && input1) {
+            btn1.addEventListener('click', () => {
+                const message = input1.value.trim();
                 if (message) {
-                    throw_error(message, succ);
+                    throw_error(message, false);
                 } else {
-                    throw_error('You must enter a message, that\'s <i>your</i> error!', succ);
+                    throw_error('You must enter a message, that\'s <i>your</i> error!', false);
+                }
+            });
+        }
+
+        if (btn2 && input2) {
+            btn2.addEventListener('click', () => {
+                const message = input2.value.trim();
+                if (message) {
+                    stat_up(message);
+                } else {
+                    stat_up('<span style="display: inline-flex; align-items: center;"><img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Winamp-logo.svg" style="width: 1.2em; height: 1.2em; margin-right: 0.4em; vertical-align: middle;">This is inspired by Winamp!</span>');
+                }
+            });
+        }
+
+        if (btn3 && input3) {
+            btn3.addEventListener('click', () => {
+                const message = input3.value.trim();
+                if (message) {
+                    msg(message);
+                } else {
+                    msg('???');
                 }
             });
         }
     }, 0);
 }));
-
 
 
 
