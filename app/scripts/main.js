@@ -247,6 +247,13 @@ function truncate(text, truncate_max = 50) {
     `;
 }
 
+function act_truncate(text, truncate_max = 20) {
+    if (text.length <= truncate_max) {
+        return text;
+    }
+    return text.slice(0, truncate_max) + '...';
+}
+
 
 stat_up('<i class="fa-solid fa-tower-broadcast fa-beat" style="color: #8000ff;"></i> Welcome to Audion!');
 
