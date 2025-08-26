@@ -71,6 +71,8 @@ strong {
     font-size: 16px;
     font-weight: normal;
     color: #ffffff;
+    user-select: none;
+    cursor: pointer;
 }
 
 .main {
@@ -86,6 +88,7 @@ strong {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    user-select: none;
 }
 
 .right {
@@ -381,6 +384,7 @@ strong {
     margin: 0 0 6px 0;
     letter-spacing: 0.04em;
     text-shadow: 0 1px 4px #2228;
+    cursor: pointer;
 }
 
 .track-artist {
@@ -389,6 +393,7 @@ strong {
     margin: 0 0 4px 0;
     font-weight: 500;
     text-shadow: 0 1px 2px #2226;
+    cursor: pointer;
 }
 
 .track-album {
@@ -397,6 +402,7 @@ strong {
     margin: 0;
     font-style: italic;
     opacity: 0.85;
+    cursor: pointer;
 }
 
 a, a:visited, a:active, a:hover {
