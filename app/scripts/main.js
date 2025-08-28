@@ -25,6 +25,7 @@ const elements = {
     stopnow: document.getElementById('cancel'),
     success_sound: document.getElementById('sucsound'),
     error_sound: document.getElementById('errsound'),
+    branding: document.getElementById('branding'),
 };
 
 let stat_calls = 0;
@@ -41,10 +42,13 @@ function stat_up(msg, ac = true) {
         stat_out = setTimeout(() => {
             if (!elements.player.src) {
                 elements.status.innerHTML = '<i class="fa-solid fa-tower-broadcast"></i> Audion';
+                elements.branding.innerHTML = null;
             } else if (elements.player.paused) {
                 elements.status.innerHTML = `<i class="fa-solid fa-circle-pause"></i> <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
+                elements.branding.innerHTML = '<br><i class="fa-solid fa-tower-broadcast" style="color: #8000ff;"></i> Audion';
             } else {
                 elements.status.innerHTML = `<i class="fa-solid fa-circle-play"></i> <strong>${metadata.title || 'Unknown track'}</strong> by ${metadata.artist || 'Unknown artist'}`;
+                elements.branding.innerHTML = '<i class="fa-solid fa-tower-broadcast fa-beat" style="color: #8000ff;"></i> Audion';
             }
             stat_out = null;
         }, 2000);
@@ -219,14 +223,6 @@ function init() {
     elements.viz_mo.addEventListener('change', () => {
         stat_up(`<i class="fa-solid fa-chart-simple"></i> Visualizer mode: ${elements.viz_mo.value}`);
     });
-
-    setInterval(() => {
-        document.getElementById('today').innerHTML = new Date().toLocaleTimeString('en-US', {
-            hour12: true,
-            hour: 'numeric',
-            minute: '2-digit'
-        }).toLowerCase() + ' <br> ' + new Date().toLocaleDateString();
-    }, 700);
 }
 
 function form_time(t) {

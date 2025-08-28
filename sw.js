@@ -1,4 +1,4 @@
-const CACHE_NAME = 'audion30';
+const CACHE_NAME = 'audion31';
 const FILES_TO_CACHE = [
   '/',                // root
   '/index.html',

@@ -61,9 +61,10 @@ strong {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 20px 20px;
     background: #111;
     cursor: default;
+    user-select: none;
 }
 
 #status {
@@ -71,7 +72,6 @@ strong {
     font-size: 16px;
     font-weight: normal;
     color: #ffffff;
-    user-select: none;
     cursor: pointer;
 }
 
@@ -405,7 +405,10 @@ strong {
     cursor: pointer;
 }
 
-a, a:visited, a:active, a:hover {
+a,
+a:visited,
+a:active,
+a:hover {
     color: #1d9bf0;
     text-decoration: none;
     transition: color 0.2s;
@@ -415,7 +418,7 @@ a, a:visited, a:active, a:hover {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    justify-content: center; 
+    justify-content: center;
 }
 
 .pop button {
@@ -432,29 +435,37 @@ a, a:visited, a:active, a:hover {
     background: #555;
 }
 
-a, a:visited, a:active, a:hover {
+a,
+a:visited,
+a:active,
+a:hover {
     color: #cfcfcf;
     text-decoration: none;
     transition: color 0.2s;
 }
 
 .mqcont {
-  width: 500px; 
-  overflow: hidden;
-  white-space: nowrap;
+    width: 500px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .mqtext {
-  display: inline-block;
-  padding-left: 100%;
-  animation: s 15s linear infinite;
+    display: inline-block;
+    padding-left: 100%;
+    animation: s 15s linear infinite;
 }
 
 .mqcont:hover .mqtext {
-  animation-play-state: paused;
+    animation-play-state: paused;
 }
 
 @keyframes s {
-  0%   { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
 }
