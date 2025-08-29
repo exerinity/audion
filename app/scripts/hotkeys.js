@@ -25,14 +25,14 @@ document.addEventListener('keydown', (e) => {
         icon = hi;
     }
 
-    if (e.code === 'Space') {
+    if (e.code === 'Space' || e.code === 'KeyK') {
         e.preventDefault();
         document.getElementById('plps').click();
-    } else if (e.code === 'ArrowLeft') {
+    } else if (e.code === 'ArrowLeft' || e.code === 'KeyJ' || e.code === 'KeyA') {
         e.preventDefault();
         elements.player.currentTime -= e.shiftKey ? 1 : 10;
         stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
-    } else if (e.code === 'ArrowRight') {
+    } else if (e.code === 'ArrowRight' || e.code === 'KeyL' || e.code === 'KeyD') {
         e.preventDefault();
         elements.player.currentTime += e.shiftKey ? 1 : 10;
         stat_up(`<i class="fa-solid fa-music"></i> Scrubbing to: ${form_time(elements.index.value)} / ${form_time(elements.player.duration)} (${e.shiftKey ? '1 second' : '10 seconds'})`);
@@ -44,12 +44,12 @@ document.addEventListener('keydown', (e) => {
         elements.player.currentTime = 0;
         stat_up('<i class="fa-solid fa-arrow-rotate-left"></i> Restarted the track');
     }
-    else if (e.code === 'ArrowUp') {
+    else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
         e.preventDefault();
         elements.vol.value = Math.min(2, parseFloat(elements.vol.value) + 0.02);
         elements.player.volume = elements.vol.value / 2;
         stat_up(`${icon} Volume: ${(elements.player.volume * 100).toFixed(0)}%`);
-    } else if (e.code === 'ArrowDown') {
+    } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
         e.preventDefault();
         elements.vol.value = Math.max(0, parseFloat(elements.vol.value) - 0.02);
         elements.player.volume = elements.vol.value / 2;

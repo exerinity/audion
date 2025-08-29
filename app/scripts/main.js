@@ -3,7 +3,6 @@ let lastact = 0;
 const elements = {
     player: document.getElementById('player'),
     upload: document.getElementById('upload'),
-    url: document.getElementById('url'),
     status: document.getElementById('status'),
     title: document.getElementById('np'),
     title2: document.getElementById('np2'),
@@ -64,7 +63,26 @@ function debounce(fn) {
     };
 }
 
-function play(fileOrUrl, name) {
+function wheel(target, fall) {
+    if (!target) return;
+    target.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const raws = parseFloat(target.step);
+        let step = !isNaN(raws) && raws > 0 ? raws : (fall ? fall() : 1);
+        if (e.shiftKey) step *= 5;
+        const direction = e.deltaY < 0 ? 1 : -1;
+        const min = parseFloat(target.min);
+        const max = parseFloat(target.max);
+        const cur = parseFloat(target.value);
+        let next = cur + direction * step;
+        if (!isNaN(min)) next = Math.max(min, next);
+        if (!isNaN(max)) next = Math.min(max, next);
+        target.value = String(next);
+        target.dispatchEvent(new Event('input', { bubbles: true }));
+    }, { passive: false });
+}
+
+function play(file, name) {
     lrc_wipe();
     if (!elements.success_sound.paused) {
         elements.success_sound.pause();
@@ -72,8 +90,8 @@ function play(fileOrUrl, name) {
     const now = Date.now();
     if (now - lastact < deb_ms) return;
     lastact = now;
-    elements.player.src = typeof fileOrUrl === 'string' ? fileOrUrl : URL.createObjectURL(fileOrUrl);
-    setCurrentFile(fileOrUrl);
+    elements.player.src = URL.createObjectURL(file);
+    setCurrentFile(file);
     let retries = 0;
     const m_retries = 3;
     function attempt2play() {
@@ -82,13 +100,7 @@ function play(fileOrUrl, name) {
             context_init(elements.player);
             vis_init();
             elements.title2.innerHTML = name;
-            if (typeof fileOrUrl !== 'string') {
-                get_meta(fileOrUrl);
-            } else {
-                document.getElementById('artist').innerHTML = '';
-                document.getElementById('album').innerHTML = '';
-                document.getElementById('cover-art').classList.add('hidden');
-            }
+            get_meta(file);
         }).catch(e => {
             if (retries < m_retries) {
                 retries++;
@@ -202,9 +214,9 @@ function init() {
         let med = '<i class="fa-solid fa-gauge"></i>';
         let hi = '<i class="fa-solid fa-gauge-high"></i>';
         let icon;
-        if (elements.speed.value < 0.5) {
+        if (elements.speed.value < 0.7) {
             icon = low;
-        } else if (elements.speed.value < 1.5) {
+        } else if (elements.speed.value < 1.3) {
             icon = med;
         } else {
             icon = hi;
@@ -223,6 +235,10 @@ function init() {
     elements.viz_mo.addEventListener('change', () => {
         stat_up(`<i class="fa-solid fa-chart-simple"></i> Visualizer mode: ${elements.viz_mo.value}`);
     });
+
+    wheel(elements.index, () => 3);
+    wheel(elements.vol, () => 0.1); 
+    wheel(elements.speed, () => 0.01);
 }
 
 function form_time(t) {
@@ -243,7 +259,7 @@ function truncate(text, truncate_max = 50) {
     `;
 }
 
-function act_truncate(text, truncate_max = 20) {
+function act_truncate(text, truncate_max = 30) {
     if (text.length <= truncate_max) {
         return text;
     }
