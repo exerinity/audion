@@ -33,20 +33,22 @@ document.getElementById('stop').addEventListener('click', debounce(() => {
 }));
 
 document.getElementById('hotkeys').addEventListener('click', debounce(() => {
-    msg(`
-            <h2>Hotkeys</h2>
-            <ul style="list-style-type: none; padding: 0;">
-            <li><strong>Space</strong>: Toggle playback (Play/Pause)</li>
-            <li><strong>Arrow Left</strong>: Seek backward 10 seconds</li>
-            <li><strong>Shift + Arrow Left</strong>: Seek backward 1 second</li>
-            <li><strong>Arrow Right</strong>: Seek forward 10 seconds</li>
-            <li><strong>Shift + Arrow Right</strong>: Seek forward 1 second</li>
-            <li><strong>Arrow Up</strong>: Increase volume by 2%</li>
-            <li><strong>Arrow Down</strong>: Decrease volume by 2%</li>
-            <li><strong>L</strong>: Toggle loop</li>
-            <li><strong>R</strong>: Restart track</li>
-            </ul>
-        `);
+   msg(`
+  <h2>Hotkeys</h2>
+  <ul style="list-style-type: none; padding: 0;">
+    <li><strong>Space / K</strong>: play/pause</li>
+    <li><strong>Left / J / A</strong>: rewind 10 seconds</li>
+    <li><strong>Right / L / D</strong>: forward 10 seconds</li>
+    <li><strong>Shift + Left</strong>: rewind 1 second</li>
+    <li><strong>Shift + Right</strong>: forward 1 second</li>
+    <li><strong>W / Up</strong>: volume up</li>
+    <li><strong>S / Down</strong>: volume down</li>
+    <li><strong>R</strong>: restart track</li>
+    <li><strong>T</strong>: toggle loop</li>
+    <p><i>You can also scroll over progress bars to change values</i></p>
+  </ul>
+`);
+
 }));
 
 document.getElementById('cover-art').addEventListener('click', debounce(() => {
